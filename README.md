@@ -1,7 +1,4 @@
-# Lab 5 Color Detection
-
-See instructions on MyCourses and read the general guidelines on the
-[website](https://mcgill-dpm.github.io/website/).
+# ECSE 211 Team 12 Repository=
 
 Follow the **design process** described in this course in order to implement this lab.
 You could be asked to explain parts of your process during the demo.
