@@ -77,6 +77,11 @@ public class Resources {
      * The slow speed at which the robot moves in degrees per second.
      */
     public static final int EXTRA_SLOW_SPEED = 75;
+    
+    /**
+     * The speed at which the hook rotates.
+     */
+    public static final int HOOK_ROTATION_SPEED = 30;
 
     // All angle threshold start here.
 
@@ -109,6 +114,11 @@ public class Resources {
      * Half small rotation for sweeping us data.
      */
     public static final double HALF_HALF_SMALL_ROTATION = 15.0;
+    
+    /**
+     * the number of degrees the hooks needs to rotate when hooking and unhooking.
+     */
+    public static final int HOOK_ROTATION_DEGREES = 90;
 
     // All Distance threshold starts here
 
