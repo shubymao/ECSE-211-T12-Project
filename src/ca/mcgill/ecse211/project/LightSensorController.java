@@ -47,7 +47,7 @@ public class LightSensorController {
     }
 
     /**
-     * Move Forward until 
+     * The move until the robot detected line on both side of the wheel.
      */
     public static void lineLocalization() {
         Navigation.setSpeed(MEDIUM_SLOW_SPEED);
