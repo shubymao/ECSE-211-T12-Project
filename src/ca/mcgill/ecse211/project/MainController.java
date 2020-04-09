@@ -82,7 +82,9 @@ public class MainController implements Runnable {
 	}
 
 	/**
-	 * Primary mode for lab
+	 * Primary function for the project which handles the whole sequence 
+	 * of high level functions in the determined order and implements the solution
+	 * to the whole design problem.
 	 */
 	private void main() {
 	}

@@ -3,6 +3,12 @@ package ca.mcgill.ecse211.project;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class handles the acquisition of the Wi-Fi parameters from the server.
+ * 
+ * @author charlesbourbeau
+ *
+ */
 public class WifiConnection implements AutoCloseable{
 
 	/**
@@ -32,6 +38,11 @@ public class WifiConnection implements AutoCloseable{
 		this.enableDebugWifiPrint = enableDebugWifiPrint;
 	}
 	
+	/**
+	 * This method gets the Wi-Fi parameters from the server and returns them
+	 * as a HashMap instance.
+	 * @return
+	 */
 	public Map<String, Object> getData() {
 		Map<String, Object> result = new HashMap<String, Object>();
 		
