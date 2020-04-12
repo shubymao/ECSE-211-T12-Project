@@ -3,6 +3,15 @@ package ca.mcgill.ecse211.project;
 import static ca.mcgill.ecse211.project.Resources.*;
 import java.util.ArrayList;
 
+/**
+ * This class contains methods that dictate the movements of the robot, ranging from
+ * atomic methods to move the robot a certain distance or turn the robot a certain angle to
+ * more complex and compound methods such as the traversal algorithm for the search zone and the 
+ * return algorithm to go from the stranded cart back to the starting corner.
+ * 
+ * @author charlesbourbeau
+ *
+ */
 public class Navigation {
 
 	/**
@@ -22,7 +31,10 @@ public class Navigation {
 
 	/**
 	 * This function calls the a* algorithm in the PathFinder class multiple times 
-	 * to visit all the grid coordinates of the search zone.
+	 * to visit all the grid coordinates of the search zone. If the US sensor detects an obstacle,
+	 * it will send the information to the PathFinder's map attribute and re-compute
+	 * a new path to the closest unvisited grid coordinate. If the forward light sensor detect
+	 * an object, assumed to be the stranded cart, this traversal is complete and the method stops.
 	 */
 	public static void searchZoneTraversal() {
 		

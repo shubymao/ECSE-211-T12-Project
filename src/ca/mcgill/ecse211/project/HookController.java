@@ -3,7 +3,8 @@ import static ca.mcgill.ecse211.project.Resources.*;
 
 /**
  * This class contains the method controlling the movement of the hook by acting on the 
- * EV3 motor attached to it. 
+ * EV3 motor attached to it. The methods incorporated are used to hook and unhook the 
+ * stranded cart.
  * 
  * @author charlesbourbeau
  *
