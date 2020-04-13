@@ -3,6 +3,11 @@ package ca.mcgill.ecse211.project;
 import static ca.mcgill.ecse211.project.Resources.*;
 import java.util.ArrayList;
 
+/**
+ * The main class for performing movement with the motors and navigate to desire position based on the current location.
+ * @author Shuby
+ *
+ */
 public class Navigation {
 
 	/**
@@ -13,10 +18,10 @@ public class Navigation {
 	/**
 	 * Convert grid coordinate to actual coordinate (cm).
 	 * 
-	 * @param ind
+	 * @param index in tile unit
 	 * @return actual distance (cm)
 	 */
-	public static double gridToCord(int ind) {
+	public static double gridToCord(int index) {
 		return ind * TILE_SIZE;
 	}
 
@@ -62,8 +67,9 @@ public class Navigation {
 	/**
 	 * Perform a operation to travel to a specified location based on the odometer. and user input
 	 * 
-	 * @param x
-	 * @param y
+	 * @param x coordinate to travel to.
+	 * @param y coordinate to travel to.
+	 * @param blocking, whether the operation blocks the thread or immediate returns.
 	 */
 	public static void travelTo(double x, double y, boolean blocking) {
 		double[] xyt = odometer.getXyt();
@@ -81,7 +87,7 @@ public class Navigation {
 	/**
 	 * Rotate to the given angle base on the current odometer data
 	 * 
-	 * @param angle
+	 * @param angle to turn to.
 	 */
 	public static void turnTo(double angle) {
 		double[] xyt = odometer.getXyt();
@@ -261,6 +267,7 @@ public class Navigation {
 	 * Moves the robot straight for the given distance.
 	 * 
 	 * @param distance in feet (tile sizes), may be negative
+	 * @param blocking, whether the method should block the thread until the move is complete or immediate return.
 	 */
 	public static void moveStraightFor(double distance, boolean blocking) {
 		leftMotor.rotate(convertDistance(distance), true);
@@ -271,6 +278,7 @@ public class Navigation {
 	 * Turns the robot by a specified angle. Positive is clockwise.
 	 * 
 	 * @param angle the angle by which to turn, in degrees
+	 * @param blocking, whether the method should block the thread until the move is complete or immediate return.
 	 */
 	public static void turnBy(double angle, boolean blocking) {
 		leftMotor.rotate(convertAngle(angle), true);

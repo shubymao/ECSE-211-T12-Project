@@ -4,6 +4,11 @@ import static ca.mcgill.ecse211.project.Resources.*;
 import lejos.hardware.Sound;
 
 
+/**
+ * The Main thread for running the main program and allow user to perform different task based on the initial selection screen.
+ * @author Shuby
+ *
+ */
 public class MainController implements Runnable {
 
 	/**

@@ -7,17 +7,53 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.PriorityQueue;
 
+/**
+ * The class help the main program determine the next course of action based on
+ * the current location. User must first initialize the paramter to set up the
+ * map.
+ * 
+ * @author Shuby
+ *
+ */
 public class PathFinder {
-	
+
+	/**
+	 * Enumeration for the status of the grid.
+	 * @author Shuby
+	 *
+	 */
 	private enum Grid {
 		Availible, SearchZoneNotVisited, SearchZoneVisited, Obsticles
 	}
 
+	/**
+	 * The map for searching or traversing.
+	 */
 	private Grid[][] map;
+	
+	/**
+	 * The coordinate of the start tile.
+	 */
 	private int[] start;
+	
+	/**
+	 * The coordinate of the tunnel head tile.
+	 */
 	private int[] tunnelHead;
+	
+	/**
+	 * The coordinate of the tunnel tail tile.
+	 */
 	private int[] tunnelTail;
+	
+	/**
+	 * The coordinate of the lower left tile of the search zone.
+	 */
 	private int[] searchZoneLL;
+	
+	/**
+	 * The coordinate of the upper right tile of the search zone.
+	 */
 	private int[] searchZoneUR;
 
 	PathFinder(boolean green, int[] tnGLL, int[] tnGUR, int[] tnRLL, int[] tnRUR, int[] gLL, int[] gUR, int[] rLL,
@@ -40,11 +76,11 @@ public class PathFinder {
 	 * Configure the tunnel entry parameter such as position and angle to enter and
 	 * exit the tunnel.
 	 * 
-	 * @param green
-	 * @param tnGLL
-	 * @param tnGUR
-	 * @param tnRLL
-	 * @param tnRUR
+	 * @param green coordinate in tile unit
+	 * @param tnGLL lower left green tunnel coordinate in tile unit
+	 * @param tnGUR upper right green tunnel coordinate in tile unit
+	 * @param tnRLL lower left red tunnel coordinate in tile unit
+	 * @param tnRUR upper right red tunnel coordinate in tile unit
 	 */
 	private void configureTunnel(boolean green, int[] tnGLL, int[] tnGUR, int[] tnRLL, int[] tnRUR) {
 		if (green) {
@@ -71,7 +107,7 @@ public class PathFinder {
 	/**
 	 * Initialize the start location and angle based on the team color.
 	 * 
-	 * @param green
+	 * @param green a boolean specifying whether the robot is green or red (false)
 	 */
 	private void initStart(boolean green) {
 		start = new int[3];
@@ -89,12 +125,14 @@ public class PathFinder {
 	/**
 	 * Initialize the map of the course later used for traversal and path finding.
 	 * 
-	 * @param tnLL
-	 * @param tnUR
-	 * @param izLL
-	 * @param izUR
-	 * @param szLL
-	 * @param szUR
+	 * @param tnLL tunnel coordinate lower left
+	 * @param tnUR tunnel coordinate upper right
+	 * @param izLL initial zone coordinate lower left
+	 * @param izUR initial zone coordinate upper right
+	 * @param ilLL island zone coordinate lower left
+	 * @param ilUR island zone coordinate upper right
+	 * @param szLL search zone coordinate lower left
+	 * @param szUR search zone coordinate upper right
 	 */
 	private void initMap(int[] tnLL, int[] tnUR, int[] izLL, int[] izUR, int[] ilLL, int[] ilUR, int[] szLL,
 			int[] szUR) {
@@ -159,9 +197,9 @@ public class PathFinder {
 	 * Register the obstacle based on the correct coordinate and angle that faced a
 	 * block.
 	 * 
-	 * @param x
-	 * @param y
-	 * @param angle
+	 * @param x coordinate of the vehicle (in tile unit)
+	 * @param y coordinate of the vehicle (in tile unit)
+	 * @param angle of the vehicle facing
 	 * @return whether the obstacle was registered.
 	 */
 	public boolean registerObstacle(int x, int y, int angle) {
@@ -174,9 +212,9 @@ public class PathFinder {
 	}
 
 	/**
-	 * @param x
-	 * @param y
-	 * @return the path to the closest corner;
+	 * @param x coordinate of the vehicle (in tile unit)
+	 * @param y coordinate of the vehicle (in tile unit)
+	 * @return the path to the closest corner
 	 */
 	public ArrayList<int[]> getPathToClosestCorner(int x, int y) {
 		int tX = Math.abs(x - searchZoneLL[0]) < Math.abs(x - searchZoneUR[0]) ? searchZoneLL[0] : searchZoneUR[0];
@@ -186,20 +224,24 @@ public class PathFinder {
 	}
 
 	/**
+	 * get the path to the next unvisited grid location for the robot to traverse.
+	 * @param x coordinate of the vehicle (in tile unit)
+	 * @param y coordinate of the vehicle (in tile unit)
 	 * @return the path to the next coordinate to visit.
 	 */
 	public ArrayList<int[]> getNextSearchCordinate(int x, int y) {
 		map[y][x] = Grid.SearchZoneVisited;
-		return aStar(x,y,-1,-1,true);
+		return aStar(x, y, -1, -1, true);
 	}
 
 	/**
 	 * The a* algorithm to find the shortest path to the target.
 	 * 
-	 * @param x
-	 * @param y
-	 * @param tX
-	 * @param tY
+	 * @param x coordinate of the vehicle (in tile unit)
+	 * @param y coordinate of the vehicle (in tile unit)
+	 * @param tX target x coordinate (in tile unit)
+	 * @param tY target t coordinate (in tile unit)
+	 * @param search a tag that determine whether the algorithm will be searching or path finding. 
 	 * @return the shortest path to the target coordinate.
 	 */
 	private ArrayList<int[]> aStar(int x, int y, int tX, int tY, boolean search) {
@@ -214,13 +256,13 @@ public class PathFinder {
 				return a[2] - b[2];
 			}
 		});
-		pq.add(new int[] { x, y, search? 0 : dist(x, y, tX, tY) * 4, 0 });
+		pq.add(new int[] { x, y, search ? 0 : dist(x, y, tX, tY) * 4, 0 });
 		while (!pq.isEmpty()) {
 			int[] cur = pq.poll();
 			int curX = cur[0];
 			int curY = cur[1];
 			int move = cur[3];
-			if ((!search && curX == tX && curY == tY)||(search && map[curY][curX]==Grid.SearchZoneNotVisited)) {
+			if ((!search && curX == tX && curY == tY) || (search && map[curY][curX] == Grid.SearchZoneNotVisited)) {
 				return getPathFromParent(curX, curY, parent);
 			}
 			visited[curY][curX] = true;
@@ -230,7 +272,7 @@ public class PathFinder {
 				int ny = (int) (curY + dir[1]);
 				if (!valid(nx, ny, visited))
 					continue;
-				int cost = (search?move + 1:dist(nx, ny, tX, tY) + move + 1) * 4 + count;
+				int cost = (search ? move + 1 : dist(nx, ny, tX, tY) + move + 1) * 4 + count;
 				pq.offer(new int[] { nx, ny, cost, move + 1 });
 				parent.put(nx * 9 + ny, curX * 9 + curY);
 				count++;

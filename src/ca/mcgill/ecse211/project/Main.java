@@ -45,6 +45,7 @@ public class Main {
 
 	/**
 	 * Shows error and exits program.
+	 * @param errorMessage to display.
 	 */
 	public static void showErrorAndExit(String errorMessage) {
 		TEXT_LCD.clear();

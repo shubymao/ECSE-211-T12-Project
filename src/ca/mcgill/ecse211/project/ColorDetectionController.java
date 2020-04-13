@@ -8,10 +8,18 @@ import java.util.Dictionary;
 import java.util.Hashtable;
 import lejos.hardware.Sound;
 
+/**
+ * The primary class for handling color detection related tasks. Can be used as
+ * a thread for constant detection or as a simple polling method.
+ * 
+ * @author Shuby
+ *
+ */
 public class ColorDetectionController implements Runnable {
 
 	/**
-	 * color samples to record the value. The first three indices contain R G and B respectively.
+	 * color samples to record the value. The first three indices contain R G and B
+	 * respectively.
 	 */
 	public static float[] colorSamples = new float[myColorSample.sampleSize()];
 
@@ -22,7 +30,8 @@ public class ColorDetectionController implements Runnable {
 	public static Dictionary<String, double[]> RINGS_RGB_NORM;
 
 	/**
-	 * The color field stored the current color detected by the color sensor. It is either yellow, orange, green, blue, or gound if the eucl distance is large.
+	 * The color field stored the current color detected by the color sensor. It is
+	 * either yellow, orange, green, blue, or gound if the eucl distance is large.
 	 */
 	public static String color = "";
 
@@ -31,7 +40,8 @@ public class ColorDetectionController implements Runnable {
 	 */
 	public static ArrayList<String> colors;
 	/**
-	 * The minimal_dist field stores the current minimal distance measured by the sensor from any ring color. 
+	 * The minimal_dist field stores the current minimal distance measured by the
+	 * sensor from any ring color.
 	 */
 	public static double minimal_dist = 0;
 
@@ -48,16 +58,21 @@ public class ColorDetectionController implements Runnable {
 
 	}
 
-	public static void initNorm() {
-	  RINGS_RGB_NORM = new Hashtable<String, double[]>();
-	  colors = new ArrayList<>();
-      RINGS_RGB_NORM.put("YELLOW", YELLOW_RING_RGB_NORM);
-      RINGS_RGB_NORM.put("BLUE", BLUE_RING_RGB_NORM);
-      RINGS_RGB_NORM.put("ORANGE", ORANGE_RING_RGB_NORM);
-      RINGS_RGB_NORM.put("GREEN", GREEN_RING_RGB_NORM);
-	}
 	/**
-	 * @return the average intensity
+	 * Initialize the main RGB norm value for color detection.
+	 */
+	public static void initNorm() {
+		RINGS_RGB_NORM = new Hashtable<String, double[]>();
+		colors = new ArrayList<>();
+		RINGS_RGB_NORM.put("YELLOW", YELLOW_RING_RGB_NORM);
+		RINGS_RGB_NORM.put("BLUE", BLUE_RING_RGB_NORM);
+		RINGS_RGB_NORM.put("ORANGE", ORANGE_RING_RGB_NORM);
+		RINGS_RGB_NORM.put("GREEN", GREEN_RING_RGB_NORM);
+	}
+
+	/**
+	 * private method for reading the color sameple.
+	 * 
 	 */
 	private static void readColor() {
 		myColorSample.fetchSample(colorSamples, 0);
@@ -67,24 +82,24 @@ public class ColorDetectionController implements Runnable {
 	 * Show the color on display.
 	 */
 	public static void showColors() {
-	  MainController.stopDisplay();
-	    String[] cs = new String[colors.size()+1];
-	    cs[0] = "Num Obj: "+colors.size();
-	    int i = 1; 
-	    for(String c: colors) {
-	      cs[i++]=c;
-	    }
-	    Display.showText(cs);
-	    Main.sleepFor(4000);
+		MainController.stopDisplay();
+		String[] cs = new String[colors.size() + 1];
+		cs[0] = "Num Obj: " + colors.size();
+		int i = 1;
+		for (String c : colors) {
+			cs[i++] = c;
+		}
+		Display.showText(cs);
+		Main.sleepFor(4000);
 	}
-	
+
 	/**
 	 * stop the motor and print the color into the display.
 	 */
 	public static void stopAndDisplayColor() {
 		leftMotor.setSpeed(0);
 		rightMotor.setSpeed(0);
-		
+
 		MainController.stopDisplay();
 		Display.printOption(color);
 		colors.add(color);
@@ -95,17 +110,15 @@ public class ColorDetectionController implements Runnable {
 		Main.sleepFor(1000);
 	}
 
+	/**
+	 * The method called by the thread continuously.
+	 */
 	private void pollColorSensor() {
 		// populate the colorSamples array with the current RGB values read
 		readColor();
 
 		// array to store the RGB values read from the sensor
-		double[] RGB_array = {
-				(double) colorSamples[0],
-				(double) colorSamples[1],
-				(double) colorSamples[2]
-		};
-
+		double[] RGB_array = { (double) colorSamples[0], (double) colorSamples[1], (double) colorSamples[2] };
 
 		// normalize the rgb array
 		normalize_RGB_array(RGB_array);
@@ -115,28 +128,28 @@ public class ColorDetectionController implements Runnable {
 		double orange_ring_dist = euclidian_distance(RGB_array, "ORANGE");
 		double green_ring_dist = euclidian_distance(RGB_array, "GREEN");
 
-
 		double minimal_dist_temp1 = Math.min(yellow_ring_dist, blue_ring_dist);
 		double minimal_dist_temp2 = Math.min(orange_ring_dist, green_ring_dist);
 		minimal_dist = Math.min(minimal_dist_temp1, minimal_dist_temp2);
 
 		// we have now found the minimal euclidian distance
 		// find the color associated with the distance
-		if(minimal_dist >= MIN_GROUND_EUCLID_DIST)	
+		if (minimal_dist >= MIN_GROUND_EUCLID_DIST)
 			color = "GROUND";
-		else if(minimal_dist == yellow_ring_dist) 
+		else if (minimal_dist == yellow_ring_dist)
 			color = "YELLOW";
-		else if(minimal_dist == blue_ring_dist) 
+		else if (minimal_dist == blue_ring_dist)
 			color = "BLUE";
-		else if(minimal_dist == orange_ring_dist) 
+		else if (minimal_dist == orange_ring_dist)
 			color = "ORANGE";
-		else if(minimal_dist == green_ring_dist) 
+		else if (minimal_dist == green_ring_dist)
 			color = "GREEN";
 	}
 
 	/**
 	 * Method to modify a RGB array to a normalized RGB array
-	 * @param RGB_array
+	 * 
+	 * @param RGB_array to normalize to.
 	 */
 	public static void normalize_RGB_array(double[] RGB_array) {
 		assert RGB_array.length == 3;
@@ -145,7 +158,7 @@ public class ColorDetectionController implements Runnable {
 		double G = RGB_array[1];
 		double B = RGB_array[2];
 
-		double normalizor = sqrt(pow(R,2) + pow(G,2) + pow(B,2));
+		double normalizor = sqrt(pow(R, 2) + pow(G, 2) + pow(B, 2));
 
 		if (normalizor == 0) {
 			RGB_array[0] = 0;
@@ -154,14 +167,18 @@ public class ColorDetectionController implements Runnable {
 			return;
 		}
 
-		for(int i = 0; i < RGB_array.length; i++) {
-			RGB_array[i] /= normalizor;	
-		}	
+		for (int i = 0; i < RGB_array.length; i++) {
+			RGB_array[i] /= normalizor;
+		}
 	}
 
 	/**
-	 * Method to compute the euclidian distance between the sample measurements
-	 * and the absolute measurement stored in Resources.
+	 * Method to compute the euclidian distance between the sample measurements and
+	 * the absolute measurement stored in Resources.
+	 * 
+	 * @param RGB_array detected
+	 * @param color to compare with
+	 * @return the euclidian distance between the rgb detected and the color to compare with.
 	 */
 	public static double euclidian_distance(double[] RGB_array, String color) {
 		double[] RING_RGB_NORM = RINGS_RGB_NORM.get(color.toUpperCase());
@@ -170,7 +187,7 @@ public class ColorDetectionController implements Runnable {
 		double green_diff = RGB_array[1] - RING_RGB_NORM[1];
 		double orange_diff = RGB_array[2] - RING_RGB_NORM[2];
 
-		double eucl_dist =  sqrt(pow(red_diff,2) + pow(green_diff,2) + pow(orange_diff,2));
+		double eucl_dist = sqrt(pow(red_diff, 2) + pow(green_diff, 2) + pow(orange_diff, 2));
 		return eucl_dist;
 	}
 
@@ -213,62 +230,43 @@ public class ColorDetectionController implements Runnable {
 		sum[2] = sum[2] / CALIBRATION_SAMPLE;
 		return sum;
 	}
-	
 
 	/**
-	 * check if the current reading a color.
+	 * Check if the current reading is a color. Used as a simple polling method with
+	 * out thread.
 	 * 
 	 * @return isColor
 	 */
 	public static boolean isColor() {
-	// array to store the RGB values read from the sensor
-	  readColor();
-      double[] RGB_array = {
-              (double) colorSamples[0],
-              (double) colorSamples[1],
-              (double) colorSamples[2]
-      };
+		// array to store the RGB values read from the sensor
+		readColor();
+		double[] RGB_array = { (double) colorSamples[0], (double) colorSamples[1], (double) colorSamples[2] };
 
+		// normalize the rgb array
+		normalize_RGB_array(RGB_array);
 
-      // normalize the rgb array
-      normalize_RGB_array(RGB_array);
+		double yellow_ring_dist = euclidian_distance(RGB_array, "YELLOW");
+		double blue_ring_dist = euclidian_distance(RGB_array, "BLUE");
+		double orange_ring_dist = euclidian_distance(RGB_array, "ORANGE");
+		double green_ring_dist = euclidian_distance(RGB_array, "GREEN");
 
-      double yellow_ring_dist = euclidian_distance(RGB_array, "YELLOW");
-      double blue_ring_dist = euclidian_distance(RGB_array, "BLUE");
-      double orange_ring_dist = euclidian_distance(RGB_array, "ORANGE");
-      double green_ring_dist = euclidian_distance(RGB_array, "GREEN");
+		double minimal_dist_temp1 = Math.min(yellow_ring_dist, blue_ring_dist);
+		double minimal_dist_temp2 = Math.min(orange_ring_dist, green_ring_dist);
+		minimal_dist = Math.min(minimal_dist_temp1, minimal_dist_temp2);
 
-
-      double minimal_dist_temp1 = Math.min(yellow_ring_dist, blue_ring_dist);
-      double minimal_dist_temp2 = Math.min(orange_ring_dist, green_ring_dist);
-      minimal_dist = Math.min(minimal_dist_temp1, minimal_dist_temp2);
-
-      // we have now found the minimal euclidian distance
-      // find the color associated with the distance
-      if(minimal_dist >= MIN_GROUND_EUCLID_DIST) {
-          color = "GROUND";
-          return false;
-      }
-      else if(minimal_dist == yellow_ring_dist) 
-          color = "YELLOW";
-      else if(minimal_dist == blue_ring_dist) 
-          color = "BLUE";
-      else if(minimal_dist == orange_ring_dist) 
-          color = "ORANGE";
-      else if(minimal_dist == green_ring_dist) 
-          color = "GREEN";
-      return true;
-	}
-
-	/**
-	 * check if value is within the interval
-	 * 
-	 * @param value
-	 * @param center
-	 * @param offset
-	 * @return value within interval
-	 */
-	private static boolean isWithinInterval(double value, double center, double offset) {
-		return value >= center - offset && value <= center + offset;
+		// we have now found the minimal euclidian distance
+		// find the color associated with the distance
+		if (minimal_dist >= MIN_GROUND_EUCLID_DIST) {
+			color = "GROUND";
+			return false;
+		} else if (minimal_dist == yellow_ring_dist)
+			color = "YELLOW";
+		else if (minimal_dist == blue_ring_dist)
+			color = "BLUE";
+		else if (minimal_dist == orange_ring_dist)
+			color = "ORANGE";
+		else if (minimal_dist == green_ring_dist)
+			color = "GREEN";
+		return true;
 	}
 }

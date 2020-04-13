@@ -57,6 +57,10 @@ public class Display implements Runnable {
 		}
 	}
 
+	/**
+	 * Shows the option of the main selection given the option
+	 * @param currentOption, a string in which the user specify the option to display to the user.
+	 */
 	public static void printOption(String currentOption) {
 		TEXT_LCD.clear();
 		TEXT_LCD.drawString(currentOption, 0, 3);

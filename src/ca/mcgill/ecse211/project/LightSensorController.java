@@ -4,6 +4,11 @@ import static ca.mcgill.ecse211.project.Resources.*;
 import lejos.hardware.Sound;
 import lejos.robotics.SampleProvider;
 
+/**
+ * Provides methods which helps with light localization and light intensity detection.
+ * @author Shuby
+ *
+ */
 public class LightSensorController {
 
     /**
