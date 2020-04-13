@@ -153,6 +153,12 @@ public class Navigation {
 	}
 
 	/**
+	 * The localization method of the rescuing phase. To be implemented.
+	 */
+	public static void trailerLocalization() {
+		
+	}
+	/**
 	 * Light localization helper method for checking obstacle.
 	 */
 	private static void lightLocalizationHelper() {
