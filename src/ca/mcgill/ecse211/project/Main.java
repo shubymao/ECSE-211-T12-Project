@@ -64,7 +64,7 @@ public class Main {
 	}
 
 	/**
-	 * Sleeps for the specified duration.
+	 * Sleeps for the specified duration based on input.
 	 * 
 	 * @param millis the duration in milliseconds
 	 */
