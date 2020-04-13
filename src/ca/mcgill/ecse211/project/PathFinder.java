@@ -8,11 +8,13 @@ import java.util.HashMap;
 import java.util.PriorityQueue;
 
 /**
- * The class help the main program determine the next course of action based on
- * the current location. User must first initialize the paramter to set up the
- * map.
+ * This class implements the atomic path-finding functions that allow the robot to compute
+ * the optimal path to a desired grid coordinate. It also contains a representation of the real-world 
+ * competition grip through its map attribute. These atomic helper functions will be used to create the 
+ * different compound navigation methods (i.e. the search zone traversal algorithm and the algorithm to
+ * carry the stranded back to the starting corner).
  * 
- * @author Shuby
+ * @author charlesbourbeau
  *
  */
 public class PathFinder {

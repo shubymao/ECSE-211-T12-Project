@@ -6,7 +6,13 @@ import static ca.mcgill.ecse211.project.Resources.*;
 import lejos.hardware.Button;
 
 /**
- * The main driver class for the lab.
+ * This class is the starting point of our program, but is mainly used to instantiate
+ * the main controller which implements the solution to the design problem by calling
+ * in sequence the high-level software components of our solution. It also creates the 
+ * initial displayed menu from where we can start the main controller.
+ * 
+ * @author charlesbourbeau
+ *
  */
 public class Main {
 

@@ -9,10 +9,15 @@ import java.util.Hashtable;
 import lejos.hardware.Sound;
 
 /**
- * The primary class for handling color detection related tasks. Can be used as
- * a thread for constant detection or as a simple polling method.
+ * This class is the controller of the color sensor which can detect the RGB values
+ * of object in the outside world. When this class is instantiated as a thread, its main
+ * function is to read the RGB values from the sensor and transform these values into 
+ * a color name based on samples that can be referred to in our testing document. These
+ * samples were used to associate each color name with a normalized RGB value. When the 
+ * sensor detects novel RGB values, the sample color with the closest euclidian distance from
+ * the input color is displayed and stored in the color field.
  * 
- * @author Shuby
+ * @author charlesbourbeau
  *
  */
 public class ColorDetectionController implements Runnable {

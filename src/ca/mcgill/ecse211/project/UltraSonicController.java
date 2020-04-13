@@ -2,6 +2,14 @@ package ca.mcgill.ecse211.project;
 
 import static ca.mcgill.ecse211.project.Resources.*;
 
+/**
+ * This class communicates with the US sensor and can be instantiated as a thread.
+ * The methods contained in this class with get the distance measured by the US sensor
+ * and filter that distance to return the most probable value.
+ * 
+ * @author charlesbourbeau
+ *
+ */
 public class UltraSonicController implements Runnable {
 
     /**
