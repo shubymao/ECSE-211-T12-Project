@@ -285,6 +285,7 @@ public class PathFinder {
 	}
 
 	/**
+	 * Return the path to the target based on a parent mapping and continously lookup until reaching target.
 	 * @param tX
 	 * @param tY
 	 * @param parent
