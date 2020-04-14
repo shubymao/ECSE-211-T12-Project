@@ -27,6 +27,9 @@ public class Display implements Runnable {
 	 */
 	private volatile boolean active = true;
 
+	/**
+	 * The thread's main task is to print the position color and angle of the vechicle in read time.
+	 */
 	public void run() {
 		while (active) {
 			TEXT_LCD.clear();

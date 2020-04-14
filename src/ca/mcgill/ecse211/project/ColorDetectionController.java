@@ -219,6 +219,7 @@ public class ColorDetectionController implements Runnable {
 	}
 
 	/**
+	 * Calibrate the color sensor by returning the current color.
 	 * @return the average intensity of r g b components.
 	 */
 	public static double[] calibrateColorSensor() {

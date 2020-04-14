@@ -109,10 +109,9 @@ public class UltraSonicController implements Runnable {
         return dist;
     }
 
-    /*
-     * Samples the US sensor and invokes the selected controller on each cycle (non Javadoc).
-     * 
-     * @see java.lang.Thread#run()
+    /**
+     * Samples the US sensor and invokes the selected controller on each cycle
+     * and update the distance variable.
      */
     public void run() {
         while (active) {

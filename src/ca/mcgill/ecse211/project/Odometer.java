@@ -60,13 +60,28 @@ public class Odometer implements Runnable {
 	 */
 	private Condition doneResetting = lock.newCondition();
 
+	/**
+	 * Singleton design pattern variable.
+	 */
 	private static Odometer odo; // Returned as singleton
 
 	// Motor-related variables
+	/**
+	 * The current tacho count of left motor for estimating distance rotated.
+	 */
 	private static int leftMotorTachoCount = 0;
+	/**
+	 * The current tacho count of right motor for estimating distance rotated.
+	 */
 	private static int rightMotorTachoCount = 0;
 	// Record the previous tachoCount
+	/**
+	 * The previous tacho count of left motor for estimating distance rotated.
+	 */
 	private static int prevLeftMotorTachoCount = 0;
+	/**
+	 * The previous tacho count of right motor for estimating distance rotated.
+	 */
 	private static int prevRightMotorTachoCount = 0;
 
 	/**

@@ -214,6 +214,7 @@ public class PathFinder {
 	}
 
 	/**
+	 * Return the path to the closest corner.
 	 * @param x coordinate of the vehicle (in tile unit)
 	 * @param y coordinate of the vehicle (in tile unit)
 	 * @return the path to the closest corner
@@ -304,6 +305,7 @@ public class PathFinder {
 	}
 
 	/**
+	 * Return whether the current coordinate is valid to visit
 	 * @param x
 	 * @param y
 	 * @param visited
@@ -316,6 +318,7 @@ public class PathFinder {
 	}
 
 	/**
+	 * Return the euclidian distance from target.
 	 * @param x
 	 * @param y
 	 * @param tx

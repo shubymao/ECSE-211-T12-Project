@@ -50,6 +50,9 @@ public class WifiConnection implements AutoCloseable{
 		return result;
 	}
 
+	/**
+	 * The method to close connection between the data distributer and the robot.
+	 */
 	@Override
 	public void close() throws Exception {
 		// TODO Auto-generated method stub
