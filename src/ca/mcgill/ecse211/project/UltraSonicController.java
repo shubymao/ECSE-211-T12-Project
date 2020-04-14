@@ -144,8 +144,8 @@ public class UltraSonicController implements Runnable {
     }
     
     /**
-     * minimum distance when sweeping a distance in cm.
-     * @return minimum distance in the sweep.
+     * Determine whether the current direction facing contain an obstacle by sweeping a small angle.
+     * @return whether the current distance is considered an obstacle.
      */
     public static boolean isObstacle() {
         Navigation.setSpeed(EXTRA_SLOW_SPEED);
